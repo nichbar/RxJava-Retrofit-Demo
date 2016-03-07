@@ -2,6 +2,9 @@ package work.nich.retrofit2demo.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orhanobut.logger.LogLevel;
@@ -12,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
@@ -36,12 +40,18 @@ public class MainActivity extends AppCompatActivity {
     private Subscription subscription;
     private String date;
     private int row;
+    // butterknife真是太好用了，力荐
+    @Bind(R.id.content)
+    TextView content;
+    @Bind(R.id.title)
+    TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        // 这个Logger比起原生的Log不知高到哪里去了
         initLogger();
         initRequestDate();
     }
@@ -64,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Action1<Daily>() {
                     @Override
                     public void call(Daily daily) {
-                        Toast.makeText(getApplicationContext(), daily.getHpEntity().getStrContent(), Toast.LENGTH_LONG).show();
+                        title.setVisibility(View.GONE);
+                        content.setText(daily.getHpEntity().getStrContent());
                     }
                 });
     }
@@ -77,7 +88,10 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Action1<Article>() {
                     @Override
                     public void call(Article article) {
-                        Logger.d("article", article.getContentEntity().getStrContent());
+                        // fromHtml可以将含html标签的String在TextView上解析显示
+                        title.setVisibility(View.VISIBLE);
+                        title.setText(article.getContentEntity().getStrContTitle());
+                        content.setText(Html.fromHtml(article.getContentEntity().getStrContent()));
                     }
                 });
     }
@@ -90,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Action1<Question>() {
                     @Override
                     public void call(Question question) {
-                        Logger.d("question", question.getTitle());
+                        title.setVisibility(View.VISIBLE);
+                        title.setText(question.getQuestionAdEntity().getStrQuestionTitle());
+                        content.setText(Html.fromHtml(question.getQuestionAdEntity().getStrQuestionContent() + "<br>" + question.getQuestionAdEntity().getStrAnswerContent()));
                     }
                 });
     }

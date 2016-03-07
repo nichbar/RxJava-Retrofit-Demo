@@ -17,6 +17,7 @@ import work.nich.retrofit2demo.App;
 
 /**
  * Created by nich- on 2016/3/1.
+ * 这是一个Retrofit的单例类（这不废话么...）
  */
 public class RetrofitUtil {
 
@@ -40,6 +41,7 @@ public class RetrofitUtil {
                     .addInterceptor(new Interceptor() {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
+                            // 拦截获取requestData
                             Response response = chain.proceed(chain.request());
                             Logger.d("Request Data", response.body().toString());
                             return response;
@@ -49,8 +51,11 @@ public class RetrofitUtil {
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(API_HOST)
+                    // 为添加拦截而自定义一个okClient，不用可忽略
                     .client(okClient)
+                    // 需要用gson来将获取到的数据转化
                     .addConverterFactory(GsonConverterFactory.create())
+                    // 添加RxJava支持
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
         }

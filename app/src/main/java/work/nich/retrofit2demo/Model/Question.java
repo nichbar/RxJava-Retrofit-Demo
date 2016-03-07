@@ -1,43 +1,57 @@
+
 package work.nich.retrofit2demo.Model;
 
-/**
- * Created by nich- on 2016/2/29.
- */
+import java.util.HashMap;
+import java.util.Map;
+
 public class Question {
 
-    private String marketTime;
-    private String title;
-    private String questionUrl;
+    private QuestionAdEntity questionAdEntity;
+    private String result;
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
-    public String getMarketTime() {
-        return marketTime;
+    /**
+     * 
+     * @return
+     *     The questionAdEntity
+     */
+    public QuestionAdEntity getQuestionAdEntity() {
+        return questionAdEntity;
     }
 
-    public void setMarketTime(String marketTime) {
-        this.marketTime = marketTime;
+    /**
+     * 
+     * @param questionAdEntity
+     *     The questionAdEntity
+     */
+    public void setQuestionAdEntity(QuestionAdEntity questionAdEntity) {
+        this.questionAdEntity = questionAdEntity;
     }
 
-    public Question(String marketTime, String title, String questionUrl) {
-        this.marketTime = marketTime;
-
-        this.title = title;
-        this.questionUrl = questionUrl;
+    /**
+     * 
+     * @return
+     *     The result
+     */
+    public String getResult() {
+        return result;
     }
 
-    public String getTitle() {
-        return title;
+    /**
+     * 
+     * @param result
+     *     The result
+     */
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
-    public String getQuestionUrl() {
-        return questionUrl;
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 
-    public void setQuestionUrl(String questionUrl) {
-        this.questionUrl = questionUrl;
-    }
 }
-
